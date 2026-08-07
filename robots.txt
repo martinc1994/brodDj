@@ -1,0 +1,6 @@
+# Robots.txt for BROD - DJ & Producer Portfolio
+User-agent: *
+Allow: /
+
+# Sitemap URL
+Sitemap: https://brodtechno.com/sitemap.xml
