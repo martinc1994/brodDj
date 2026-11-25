@@ -144,10 +144,87 @@ function setLanguage(lang) {
 }
 
 
+// ============ DYNAMIC CONTENT LOADER ============
+async function loadDynamicContent() {
+  try {
+    const res = await fetch('data/content.json?v=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+
+    // 1. Sync hero & about texts with translations
+    if (data.hero) {
+      if (data.hero.tagline_en) translations.en['hero.tagline'] = data.hero.tagline_en;
+      if (data.hero.tagline_es) translations.es['hero.tagline'] = data.hero.tagline_es;
+      if (data.hero.image) {
+        const heroImg = document.getElementById('hero-image');
+        if (heroImg) heroImg.src = data.hero.image;
+      }
+    }
+
+    if (data.about) {
+      if (data.about.bio1_en) translations.en['about.bio1'] = data.about.bio1_en;
+      if (data.about.bio1_es) translations.es['about.bio1'] = data.about.bio1_es;
+      if (data.about.bio2_en) translations.en['about.bio2'] = data.about.bio2_en;
+      if (data.about.bio2_es) translations.es['about.bio2'] = data.about.bio2_es;
+      if (data.about.statSets) {
+        const sSets = document.getElementById('stat-sets');
+        if (sSets) sSets.textContent = data.about.statSets;
+      }
+      if (data.about.statFollowers) {
+        const sFollowers = document.getElementById('stat-followers');
+        if (sFollowers) sFollowers.textContent = data.about.statFollowers;
+      }
+      if (data.about.statGroove) {
+        const sGroove = document.getElementById('stat-groove');
+        if (sGroove) sGroove.textContent = data.about.statGroove;
+      }
+      if (data.about.image) {
+        const aboutImg = document.getElementById('about-image');
+        if (aboutImg) aboutImg.src = data.about.image;
+      }
+    }
+
+    // 2. Render SoundCloud tracks sorted newest to oldest
+    if (data.tracks && Array.isArray(data.tracks)) {
+      const activeTracks = data.tracks.filter(t => t.active !== false);
+      // Sort newest to oldest
+      activeTracks.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+      const musicGrid = document.getElementById('music-grid');
+      if (musicGrid && activeTracks.length > 0) {
+        musicGrid.innerHTML = activeTracks.map((track, idx) => `
+          <article class="music__player-card reveal revealed reveal-delay-${(idx % 3) + 1}" id="player-${track.id || idx}" itemscope itemtype="https://schema.org/MusicRecording">
+            <div class="music__player-label">
+              <span class="pulse"></span>
+              <span itemprop="name">${track.title}</span>
+            </div>
+            <iframe
+              width="100%"
+              height="166"
+              scrolling="no"
+              frameborder="no"
+              allow="autoplay"
+              src="https://w.soundcloud.com/player/?url=${encodeURIComponent(track.url)}&color=%23e11d48&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=true"
+              title="${track.title} (SoundCloud Track)"
+              loading="lazy"
+            ></iframe>
+          </article>
+        `).join('');
+      }
+    }
+
+    // Refresh translations on UI
+    setLanguage(currentLang);
+  } catch (err) {
+    console.warn('Could not load dynamic content.json, using default HTML:', err);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ============ INIT LANGUAGE ============
+  // ============ INIT DYNAMIC CONTENT & LANGUAGE ============
   setLanguage(currentLang);
+  loadDynamicContent();
 
   // Language switch buttons
   document.querySelectorAll('.lang-switch__btn').forEach(btn => {

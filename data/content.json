@@ -1,0 +1,64 @@
+{
+  "tracks": [
+    {
+      "id": "set-004",
+      "title": "Set #004 — Hardgroove Session",
+      "url": "https://soundcloud.com/rodrigo-brizuela-6/set-004",
+      "date": "2024-03-15",
+      "active": true
+    },
+    {
+      "id": "set-003",
+      "title": "Set #003 — Live at Support Studio",
+      "url": "https://soundcloud.com/rodrigo-brizuela-6/brod_003",
+      "date": "2023-11-20",
+      "active": true
+    },
+    {
+      "id": "set-001",
+      "title": "Set #001 — Live at Private Party",
+      "url": "https://soundcloud.com/rodrigo-brizuela-6/live-mix_17-06-2023",
+      "date": "2023-06-17",
+      "active": true
+    }
+  ],
+  "hero": {
+    "tagline_en": "DJ & Producer · Groovy Techno · Argentina",
+    "tagline_es": "DJ & Productor · Groovy Techno · Argentina",
+    "image": "assets/img/principalBrod.jpg"
+  },
+  "about": {
+    "bio1_en": "BROD (Rodrigo Brizuela) is a DJ and producer based in Tucumán, Argentina, focused on a <strong>dark, hypnotic and rhythmic sound</strong>, where groove is the main axis of every set and production.",
+    "bio1_es": "BROD (Rodrigo Brizuela) es un DJ y productor de Tucumán, Argentina, enfocado en un <strong>sonido oscuro, hipnótico y rítmico</strong>, donde el groove es el eje principal de cada set y producción.",
+    "bio2_en": "His proposal combines the raw strength of techno with influences from <strong>techhouse, breakbeat and hardgroove</strong>, creating an intense physical and emotional experience on the dancefloor.",
+    "bio2_es": "Su propuesta combina la fuerza pura del techno con influencias del <strong>techhouse, breakbeat y hardgroove</strong>, buscando generar una experiencia física y emocional en la pista de baile.",
+    "statSets": "4+",
+    "statFollowers": "1.4K",
+    "statGroove": "∞",
+    "image": "assets/img/blackwhiteBrod.jpeg"
+  },
+  "gallery": [
+    {
+      "image": "assets/img/EspaldaBrod.jpg",
+      "label_en": "Live Session",
+      "label_es": "Sesión en Vivo"
+    },
+    {
+      "image": "assets/img/principalBrod.jpg",
+      "label_en": "In The Mix",
+      "label_es": "En la Mezcla"
+    },
+    {
+      "image": "assets/img/blackwhiteBrod.jpeg",
+      "label_en": "Official Portrait",
+      "label_es": "Retrato Oficial"
+    }
+  ],
+  "socials": {
+    "instagram": "https://www.instagram.com/brod_of/",
+    "soundcloud": "https://soundcloud.com/rodrigo-brizuela-6",
+    "spotify": "https://open.spotify.com/artist/4jct8KLP8pIQFrwE9i8wNb",
+    "presskit": "https://www.mavelpoint.com/artist/rodrigo-brizuela",
+    "youtube_press": "https://youtu.be/0zn3oZcMbj8?si=kw3nDA2NT-orxumd&t=2607"
+  }
+}

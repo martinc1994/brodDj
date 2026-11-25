@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BROD — Panel de Administración</title>
+  <link rel="icon" type="image/png" href="https://i1.sndcdn.com/avatars-635tksjBOY1SbrJG-M4TQkQ-t500x500.jpg">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ============ PANTALLA LOGIN ============ -->
+  <div id="login-modal" class="modal-overlay active">
+    <div class="login-card">
+      <div class="login-logo">
+        <span class="logo-text">BROD</span>
+        <span class="badge">ADMIN</span>
+      </div>
+      <h2>Acceso al Panel</h2>
+      <p class="subtitle">Ingresá la contraseña para gestionar sets, fotos y textos.</p>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="admin-pass">Contraseña de Administrador</label>
+          <input type="password" id="admin-pass" placeholder="••••••••" required autofocus autocomplete="current-password">
+        </div>
+
+        <details class="advanced-settings">
+          <summary>⚙️ Configuración avanzada (GitHub Token directo)</summary>
+          <div class="advanced-content">
+            <p class="hint">Si no tenés configurada la función de Netlify, podés usar un Token Personal de GitHub con permisos de repositorio:</p>
+            <div class="form-group">
+              <label for="github-token-input">GitHub Personal Access Token (opcional)</label>
+              <input type="password" id="github-token-input" placeholder="ghp_xxxx o github_pat_xxxx">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="github-owner-input">Dueño (Owner)</label>
+                <input type="text" id="github-owner-input" value="martinc1994">
+              </div>
+              <div class="form-group">
+                <label for="github-repo-input">Repositorio</label>
+                <input type="text" id="github-repo-input" value="brodDj">
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <button type="submit" class="btn btn-primary btn-block" id="login-btn">Entrar al Panel</button>
+        <div id="login-error" class="error-msg hidden"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ PANEL PRINCIPAL ============ -->
+  <div id="app-container" class="app-layout hidden">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-brand">
+        <span class="brand-name">BROD</span>
+        <span class="brand-tag">CONTROL ROOM</span>
+      </div>
+      <div class="header-actions">
+        <a href="/" target="_blank" class="btn btn-ghost" title="Ver la web pública">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Ver Web
+        </a>
+        <button id="logout-btn" class="btn btn-ghost">Salir</button>
+      </div>
+    </header>
+
+    <!-- Navegación por pestañas -->
+    <nav class="admin-tabs">
+      <button class="tab-btn active" data-tab="tab-tracks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12 0a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Sets de SoundCloud
+      </button>
+      <button class="tab-btn" data-tab="tab-texts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        Textos & Bio
+      </button>
+      <button class="tab-btn" data-tab="tab-media">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Fotos & Galería
+      </button>
+      <button class="tab-btn" data-tab="tab-socials">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Redes & Enlaces
+      </button>
+    </nav>
+
+    <!-- Contenido de las pestañas -->
+    <main class="admin-content">
+
+      <!-- PESTAÑA 1: SOUNDCLOUD TRACKS -->
+      <section id="tab-tracks" class="tab-pane active">
+        <div class="pane-header">
+          <div>
+            <h2>Sets de SoundCloud</h2>
+            <p class="subtitle">Agregá o modificá tus sets. <strong>Se ordenan automáticamente del más nuevo al más antiguo en la web según la fecha indicada.</strong></p>
+          </div>
+          <button id="add-track-btn" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Nuevo Set
+          </button>
+        </div>
+
+        <!-- Formulario agregar track (colapsable) -->
+        <div id="track-form-card" class="card form-card hidden">
+          <h3 id="track-form-title">Agregar Nuevo Set</h3>
+          <form id="track-form">
+            <input type="hidden" id="track-edit-index" value="-1">
+            <div class="form-row">
+              <div class="form-group flex-2">
+                <label for="track-title-input">Título del Set / Sesión *</label>
+                <input type="text" id="track-title-input" placeholder="Ej: Set #005 — Hardgroove Hypnosis" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="track-date-input">Fecha del Set *</label>
+                <input type="date" id="track-date-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="track-url-input">Enlace de SoundCloud (Track o Set) *</label>
+              <input type="url" id="track-url-input" placeholder="https://soundcloud.com/rodrigo-brizuela-6/nombre-del-set" required>
+              <span class="hint">Copia y pega la URL directa de la barra de direcciones de SoundCloud.</span>
+            </div>
+
+            <!-- Preview del Player -->
+            <div class="track-preview-container">
+              <label>Vista previa del reproductor:</label>
+              <div id="track-preview-box" class="preview-box">
+                <p class="hint">Ingresá el enlace de SoundCloud arriba para previsualizar cómo se verá.</p>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="cancel-track-btn" class="btn btn-ghost">Cancelar</button>
+              <button type="submit" class="btn btn-accent" id="save-track-btn">Guardar Set en la Lista</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Lista de Tracks -->
+        <div class="tracks-list" id="tracks-list">
+          <!-- Renderizado dinámico desde JS -->
+        </div>
+      </section>
+
+      <!-- PESTAÑA 2: TEXTOS Y BIO -->
+      <section id="tab-texts" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Textos & Biografía</h2>
+            <p class="subtitle">Modificá los textos principales de la página de inicio en Español e Inglés.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Portada (Hero)</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="hero-tagline-es">Subtítulo Hero (Español)</label>
+              <input type="text" id="hero-tagline-es">
+            </div>
+            <div class="form-group">
+              <label for="hero-tagline-en">Subtítulo Hero (Inglés)</label>
+              <input type="text" id="hero-tagline-en">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Sobre BROD (About)</h3>
+          <div class="form-group">
+            <label for="about-bio1-es">Biografía Párrafo 1 (Español)</label>
+            <textarea id="about-bio1-es" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="about-bio1-en">Biografía Párrafo 1 (Inglés)</label>
+            <textarea id="about-bio1-en" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="about-bio2-es">Biografía Párrafo 2 (Español)</label>
+            <textarea id="about-bio2-es" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="about-bio2-en">Biografía Párrafo 2 (Inglés)</label>
+            <textarea id="about-bio2-en" rows="3"></textarea>
+          </div>
+
+          <h4 style="margin-top: 24px; margin-bottom: 12px; color: var(--accent);">Estadísticas</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="stat-sets-input">Sets en Vivo</label>
+              <input type="text" id="stat-sets-input" placeholder="4+">
+            </div>
+            <div class="form-group">
+              <label for="stat-followers-input">Seguidores</label>
+              <input type="text" id="stat-followers-input" placeholder="1.4K">
+            </div>
+            <div class="form-group">
+              <label for="stat-groove-input">Groove</label>
+              <input type="text" id="stat-groove-input" placeholder="∞">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PESTAÑA 3: FOTOS Y GALERÍA -->
+      <section id="tab-media" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Imágenes Principales</h2>
+            <p class="subtitle">Elegí la foto de portada y la foto del perfil 'About'. Podés subir una imagen nueva desde tu dispositivo o pegar la ruta.</p>
+          </div>
+        </div>
+
+        <div class="media-grid">
+          <!-- Hero Image -->
+          <div class="card media-card">
+            <h3>Foto de Portada (Hero)</h3>
+            <div class="media-preview">
+              <img id="hero-img-preview" src="../assets/img/principalBrod.jpg" alt="Preview Hero">
+            </div>
+            <div class="form-group">
+              <label>Subir nueva foto desde tu dispositivo:</label>
+              <input type="file" id="hero-img-file" accept="image/*">
+            </div>
+            <div class="form-group">
+              <label for="hero-img-path">O ruta de imagen:</label>
+              <input type="text" id="hero-img-path" value="assets/img/principalBrod.jpg">
+            </div>
+          </div>
+
+          <!-- About Image -->
+          <div class="card media-card">
+            <h3>Foto de Perfil (About)</h3>
+            <div class="media-preview">
+              <img id="about-img-preview" src="../assets/img/blackwhiteBrod.jpeg" alt="Preview About">
+            </div>
+            <div class="form-group">
+              <label>Subir nueva foto desde tu dispositivo:</label>
+              <input type="file" id="about-img-file" accept="image/*">
+            </div>
+            <div class="form-group">
+              <label for="about-img-path">O ruta de imagen:</label>
+              <input type="text" id="about-img-path" value="assets/img/blackwhiteBrod.jpeg">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PESTAÑA 4: REDES -->
+      <section id="tab-socials" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Redes Sociales & Links</h2>
+            <p class="subtitle">Actualizá los enlaces de contacto y perfiles de streaming.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label for="social-instagram">Instagram</label>
+            <input type="url" id="social-instagram" placeholder="https://www.instagram.com/brod_of/">
+          </div>
+          <div class="form-group">
+            <label for="social-soundcloud">SoundCloud</label>
+            <input type="url" id="social-soundcloud" placeholder="https://soundcloud.com/rodrigo-brizuela-6">
+          </div>
+          <div class="form-group">
+            <label for="social-spotify">Spotify</label>
+            <input type="url" id="social-spotify" placeholder="https://open.spotify.com/artist/...">
+          </div>
+          <div class="form-group">
+            <label for="social-presskit">Press Kit (MavelPoint)</label>
+            <input type="url" id="social-presskit" placeholder="https://www.mavelpoint.com/artist/...">
+          </div>
+          <div class="form-group">
+            <label for="social-youtube">Video Prensa (YouTube)</label>
+            <input type="url" id="social-youtube" placeholder="https://youtu.be/...">
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ BARRA DE ACCIÓN FIJA INFERIOR ============ -->
+    <footer class="admin-sticky-bar">
+      <div class="sticky-status" id="save-status-text">
+        Listo para guardar cambios.
+      </div>
+      <div class="sticky-buttons">
+        <button id="discard-changes-btn" class="btn btn-ghost">Descartar Cambios</button>
+        <button id="publish-btn" class="btn btn-accent btn-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Publicar Cambios en la Web
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal feedback de publicación -->
+  <div id="status-modal" class="modal-overlay">
+    <div class="status-card">
+      <div id="modal-spinner" class="spinner"></div>
+      <h3 id="modal-title">Publicando cambios...</h3>
+      <p id="modal-msg">Enviando actualización a GitHub. Netlify desplegará la nueva versión automáticamente.</p>
+      <div class="modal-actions hidden" id="modal-actions">
+        <button id="modal-close-btn" class="btn btn-primary">Aceptar</button>
+        <a id="modal-view-site-btn" href="/" target="_blank" class="btn btn-ghost">Ir al sitio</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
