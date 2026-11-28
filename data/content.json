@@ -1,6 +1,13 @@
 {
   "tracks": [
     {
+      "id": "set-1795878549307",
+      "title": "Open Call Rave x El Altillo",
+      "url": "https://soundcloud.com/rodrigo-brizuela-6/set-open-call-rave?si=832b2ed631c14b8294b76c0debc0a515&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "date": "2026-09-24",
+      "active": true
+    },
+    {
       "id": "set-004",
       "title": "Set #004 — Hardgroove Session",
       "url": "https://soundcloud.com/rodrigo-brizuela-6/set-004",
@@ -23,16 +30,16 @@
     }
   ],
   "hero": {
-    "tagline_en": "DJ & Producer · Groovy Techno · Argentina",
-    "tagline_es": "DJ & Productor · Groovy Techno · Argentina",
+    "tagline_es": "DJ & Productor  · Argentina",
+    "tagline_en": "DJ & Producer · Argentina",
     "image": "assets/img/principalBrod.jpg"
   },
   "about": {
-    "bio1_en": "BROD (Rodrigo Brizuela) is a DJ and producer based in Tucumán, Argentina, focused on a <strong>dark, hypnotic and rhythmic sound</strong>, where groove is the main axis of every set and production.",
     "bio1_es": "BROD (Rodrigo Brizuela) es un DJ y productor de Tucumán, Argentina, enfocado en un <strong>sonido oscuro, hipnótico y rítmico</strong>, donde el groove es el eje principal de cada set y producción.",
-    "bio2_en": "His proposal combines the raw strength of techno with influences from <strong>techhouse, breakbeat and hardgroove</strong>, creating an intense physical and emotional experience on the dancefloor.",
-    "bio2_es": "Su propuesta combina la fuerza pura del techno con influencias del <strong>techhouse, breakbeat y hardgroove</strong>, buscando generar una experiencia física y emocional en la pista de baile.",
-    "statSets": "4+",
+    "bio1_en": "BROD (Rodrigo Brizuela) is a DJ and producer based in Tucumán, Argentina, focused on a <strong>dark, hypnotic and rhythmic sound</strong>, where groove is the main axis of every set and production.",
+    "bio2_es": "Su propuesta explora distintas vertientes del techno —raw, hypnotic, peak time, hardgroove—, combinando intensidad, energía y profundidad, con una identidad marcada por la fuerza rítmica y la hipnosis. Sus sets buscan generar una experiencia física y emocional en la pista, construyendo atmósferas y tensión a través del groove.\n\nA lo largo de su recorrido, compartió cabina con artistas como Fabio Florido, Jorge Ciccioli y Metodi Hristov.",
+    "bio2_en": "His musical approach explores different shades of techno —raw, peak time, hardgroove and rave— combining intensity, energy and depth, with a distinctive identity driven by rhythm and hypnosis. His sets aim to create a physical and emotional experience on the dancefloor, building atmospheres and tension through groove.\n\nThroughout his journey, he has shared the booth with artists such as Fabio Florido, Jorge Ciccioli and Metodi Hristov.",
+    "statSets": "6+",
     "statFollowers": "1.4K",
     "statGroove": "∞",
     "image": "assets/img/blackwhiteBrod.jpeg"
